@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- layui样式 -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/layui.css' %}">
+    <title>Document</title>
+    <style>
+        #code {
+            width: calc(100% - 200px);
+            float: left;
+            margin-right: 8px;
+        }
+
+        .layui-col-space15 {
+            margin: 0px;
+        }
+
+        .foot {
+            height: 49px !important;
+            line-height: 49px;
+            text-align: right;
+            background-color: #f5f5f5;
+            border-top: 1px #e5e5e5 solid;
+        }
+
+        .foot button {
+            width: 62px;
+            height: 28px;
+            line-height: 28px;
+            margin-left: 2px;
+            margin-right: 15px;
+        }
+
+        .foot .close:hover {
+            border-color: #1E9FFF;
+        }
+    </style>
+</head>
+
+<body style="background-color: #ffffff">
+<form class="layui-form" action="">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12" style="padding-bottom: 0;">
+            <div class="layui-card">
+                <div class="layui-card-body" pad15="">
+                    <div class="layui-form" lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">当前密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="oldPassword" lay-verify="required" lay-vertype="tips"
+                                       class="layui-input" id="oldPasswd">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" lay-verify="required" lay-verify="pass"
+                                       lay-vertype="tips" autocomplete="off" id="pass1" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">确认新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="repassword" lay-verify="required" lay-verify="repass"
+                                       lay-vertype="tips" autocomplete="off" class="layui-input" id="pass2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="foot">
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+                lay-filter="setmypass" onclick="editPasswd()">确定
+        </button>
+    </div>
+</form>
+<!-- layui JS -->
+<script src="{% static 'js/layui.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script>
+    function editPasswd()
+    {
+        var oldpwd = getvalue('oldPasswd')
+        var pass1 = getvalue('pass1')
+        var pass2 = getvalue('pass2')
+        $.ajax({
+            url:'/api/edit/passwd',
+            type:'POST',
+            data:{
+                oldpwd:oldpwd,
+                pass1:pass1,
+                pass2:pass2
+            },
+            success:function (data)
+            {
+                alert(data)
+                window.location.reload()
+            }
+        })
+    }
+
+    function getvalue(id)
+    {
+        return document.getElementById(id).value
+    }
+</script>
+</body>
+
+</html>

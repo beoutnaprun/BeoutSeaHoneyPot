@@ -1,0 +1,7 @@
+# Method Install pip install -r requirements.txt
+Django==2.2.6
+Pillow==9.4.0
+json5==0.9.6
+random2==1.0.1
+datetime==4.3
+time==1.0

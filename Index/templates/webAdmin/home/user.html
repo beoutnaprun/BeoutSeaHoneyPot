@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/layui.css' %}">
+    <script src="{% static 'Home/layui/layui.js' %}"></script>
+    <script src="{% static 'Home/js/jquery.js' %}"></script>
+    <style>
+        .pageNumber {
+            text-align: center;
+        }
+
+        .pageNumber a {
+            text-decoration: underline;
+        }
+        .layui-btn{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<span style="margin-left: 1rem;">当前所在页:{{ acctackTable.page }}</span>
+<table class="layui-table">
+    <thead>
+    <tr>
+        <th >#</th>
+        <th >注册手机号</th>
+        <th >注册密码</th>
+        <th>ip地址</th>
+        <th style="width: 50px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for dada in acctackTable.Udata %}
+        <tr>
+            <td style="height: 20px">{{ dada.id }}</td>
+            <td style="height: 20px">{{ dada.phone }}</td>
+            <td style="height: 20px">{{ dada.password }}</td>
+            <td style="height: 20px">{{ dada.ipaddr }}</td>
+            <td style="height: 20px">
+                <button class="layui-btn" style="height: 25px;line-height: 25px;" onclick="DeleteAcctack('{{ dada.id }}')">删除</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<hr>
+<script>
+    function SelectAttack()
+    {
+        var ip = document.getElementById('ipAddr').value
+        window.location.href = "/api/view?act=webAdmin/home/attack.html&ipaddr=" + ip
+    }
+    function DeleteAcctack(id)
+    {
+        $.ajax({
+            url:'/api/delete/user?id=' + id,
+            type:'GET',
+            success:function (data)
+            {
+                if (data === 'Success')
+                {
+                    window.location.reload()
+                }
+                else {
+                    alert(data)
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

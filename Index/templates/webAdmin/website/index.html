@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/layui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/webSetting.css' %}">
+    <script src="{% static 'js/layui.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <style>
+        html {
+            background-color: #f0f2f5;
+            color: #666;
+        }
+
+        .layui-fluid {
+            padding: 14px;
+        }
+
+        .layui-card-header {
+            position: relative;
+        }
+
+        .layui-form[wid100] .layui-form-label {
+            width: 100px;
+        }
+
+        .layui-form[wid100] .layui-input-block {
+            margin-left: 130px;
+        }
+
+        .layui-form-item .layui-input-company {
+            width: auto;
+            padding-right: 10px;
+            line-height: 38px;
+        }
+
+        @media screen and (max-width: 450px) {
+            .layui-form[wid100] .layui-form-item .layui-input-inline {
+                margin-left: 132px;
+            }
+        }
+
+        @media screen and (max-width: 450px) {
+            .layui-form[wid100] .layui-form-item .layui-input-inline + .layui-form-mid {
+                margin-left: 130px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">网站设置</div>
+                <div class="layui-card-body" pad15="">
+
+                    <div class="layui-form" wid100="" lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">网站名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="sitename" value="{{ webconfig.title }}" class="layui-input" id="webtitle">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">网站域名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="domain" lay-verify="url" value="{{ webconfig.url }}"
+                                       class="layui-input" id="url">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">蜜罐启用</label>
+                            <div class="layui-input-block">
+                                <select name="" id="status" class="layui-input" style="display: inline-block">
+                                    {% if webconfig.status == '1' %}
+                                        <option value="1" selected>启用状态</option>
+                                        <option value="0">禁用状态</option>
+                                    {% else %}
+                                        <option value="1">启用状态</option>
+                                        <option value="0" selected>禁用状态</option>
+                                    {% endif %}
+
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">首页标题</label>
+                            <div class="layui-input-block">
+                                <textarea name="title" class="layui-textarea" id="homeTitle">{{ webconfig.homeTitle }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">版权信息</label>
+                            <div class="layui-input-block">
+                                    <textarea name="copyright"
+                                              class="layui-textarea" id="copy">{{ webconfig.copy }}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="set_website"
+                                        onclick="SaveConfig()">
+                                    确认保存
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function SaveConfig() {
+        var webtitle = getid('webtitle')
+        var url = getid('url')
+        var status = getid('status')
+        var homeTitle = getid('homeTitle')
+        var copy = getid('copy')
+        $.ajax({
+            url:'/api/webSetting/save',
+            type:'POST',
+            data:{
+                webtitle:webtitle,
+                url:url,
+                status:status,
+                homeTitle:homeTitle,
+                copy:copy,
+            },
+            success:function (data)
+            {
+                alert(data)
+            }
+        })
+    }
+
+    function getid(id)
+    {
+        return document.getElementById(id).value
+    }
+</script>
+</html>
